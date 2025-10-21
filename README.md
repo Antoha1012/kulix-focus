@@ -10,11 +10,32 @@ git clone https://github.com/Antoha1012/kulix-focus.git
 cd kulix-focus
 pnpm install
 
+# Set up environment variables
+cp .env.example .env.local
+# Edit .env.local and add your OPENROUTER_API_KEY
+
 # Start development server
 pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to view the app.
+
+## 🌐 Live Demo
+
+Visit the live application: [https://kulix-focus.vercel.app](https://kulix-focus.vercel.app)
+
+## 🔧 Environment Setup
+
+Create a `.env.local` file in the root directory:
+
+```env
+OPENROUTER_API_KEY=your_openrouter_api_key_here
+OPENROUTER_MODEL=gpt-4o-mini
+OPENROUTER_MAX_TOKENS=1000
+OPENROUTER_TEMPERATURE=0.7
+```
+
+Get your OpenRouter API key from [OpenRouter.ai](https://openrouter.ai/)
 
 ## 📋 Core Modules
 
