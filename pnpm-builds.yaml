@@ -1,0 +1,6 @@
+allowedBuilds:
+    # Image pipeline for Next.js
+    - sharp
+
+    # Transitive native resolver (allow if present)
+    - unrs-resolver
