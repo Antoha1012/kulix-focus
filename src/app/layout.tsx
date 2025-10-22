@@ -6,28 +6,38 @@ import AppShell from "@/components/layout/AppShell";
 const outfit = Outfit({
 	variable: "--font-outfit",
 	subsets: ["latin"],
-	weight: ["400", "500", "600", "700"], // Removed 300 weight to reduce bundle size
-	display: "swap", // Optimize font loading
-	preload: true, // Preload critical font
+	weight: ["400", "500", "600", "700"],
+	display: "swap",
+	preload: true,
 });
 
 export const metadata: Metadata = {
 	title: "KuliX Focus - AI Productivity Tool",
 	description:
 		"Open-source AI Productivity Tool with three powerful modules for writing, focus tracking, and ideation.",
-	keywords: ["AI", "productivity", "writing", "focus", "ideas", "Next.js", "TypeScript"],
+	keywords: [
+		"AI",
+		"productivity",
+		"writing",
+		"focus",
+		"ideas",
+		"Next.js",
+		"TypeScript",
+	],
 	authors: [{ name: "KuliX Focus Team" }],
 	robots: "index, follow",
 	openGraph: {
 		title: "KuliX Focus - AI Productivity Tool",
-		description: "Open-source AI Productivity Tool with three powerful modules for writing, focus tracking, and ideation.",
+		description:
+			"Open-source AI Productivity Tool with three powerful modules for writing, focus tracking, and ideation.",
 		type: "website",
 		locale: "en_US",
 	},
 	twitter: {
 		card: "summary_large_image",
 		title: "KuliX Focus - AI Productivity Tool",
-		description: "Open-source AI Productivity Tool with three powerful modules for writing, focus tracking, and ideation.",
+		description:
+			"Open-source AI Productivity Tool with three powerful modules for writing, focus tracking, and ideation.",
 	},
 };
 
@@ -44,20 +54,21 @@ export default function RootLayout({
 	const structuredData = {
 		"@context": "https://schema.org",
 		"@type": "WebApplication",
-		"name": "KuliX Focus",
-		"description": "Open-source AI Productivity Tool with three powerful modules for writing, focus tracking, and ideation.",
-		"url": "https://kulix-focus.vercel.app",
-		"applicationCategory": "ProductivityApplication",
-		"operatingSystem": "Web Browser",
-		"offers": {
+		name: "KuliX Focus",
+		description:
+			"Open-source AI Productivity Tool with three powerful modules for writing, focus tracking, and ideation.",
+		url: "https://kulix-focus.vercel.app",
+		applicationCategory: "ProductivityApplication",
+		operatingSystem: "Web Browser",
+		offers: {
 			"@type": "Offer",
-			"price": "0",
-			"priceCurrency": "USD"
+			price: "0",
+			priceCurrency: "USD",
 		},
-		"creator": {
+		creator: {
 			"@type": "Organization",
-			"name": "KuliX Focus Team"
-		}
+			name: "KuliX Focus Team",
+		},
 	};
 
 	return (

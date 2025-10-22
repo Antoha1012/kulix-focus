@@ -1,10 +1,5 @@
 "use client";
 
-/**
- * Purpose: Prompt controls for the Writing module with validation and generate action.
- * Boundaries: Client-only; calls server route /api/ai/router.
- * Owner: @anton (initial)
- */
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -32,7 +27,6 @@ export default function PromptBar() {
 	const [loading, setLoading] = useState(false);
 	const [currentPlaceholder, setCurrentPlaceholder] = useState(0);
 
-	// Rotating placeholders for better UX
 	const placeholders = [
 		"e.g., Landing page copy for a note-taking app",
 		"e.g., YouTube script about healthy sleep",
@@ -41,7 +35,6 @@ export default function PromptBar() {
 		"e.g., Blog post about AI productivity tools",
 	];
 
-	// Rotate placeholder on focus/mount
 	React.useEffect(() => {
 		const interval = setInterval(() => {
 			setCurrentPlaceholder(prev => (prev + 1) % placeholders.length);
@@ -49,7 +42,6 @@ export default function PromptBar() {
 		return () => clearInterval(interval);
 	}, [placeholders.length]);
 
-	// Common styles for all form elements - elegant writing theme style
 	const commonInputStyles =
 		"h-12 min-h-[48px] max-h-[48px] py-3 px-4 bg-slate-900/50 border border-slate-700/50 text-white rounded-lg shadow-sm hover:border-violet-400/50 hover:bg-slate-800/50 focus:border-violet-400 focus:bg-slate-800 focus:ring-2 focus:ring-violet-400/20 focus:ring-offset-2 focus:ring-offset-slate-900 transition-all duration-200 text-base flex items-center backdrop-blur-sm";
 
@@ -66,7 +58,6 @@ export default function PromptBar() {
 		}
 		setLoading(true);
 		try {
-			// Use unified fetchJson helper to keep error handling consistent across app
 			const json = await fetchJson<
 				| { ok: true; data: string }
 				| { ok: false; error: { code: string; message: string } }
@@ -117,10 +108,6 @@ export default function PromptBar() {
 								repeat: Infinity,
 								ease: "easeInOut",
 							}}
-							whileHover={{
-								scale: 1.1,
-								boxShadow: "0 0 20px rgba(120,80,255,0.3)",
-							}}
 						>
 							<Sparkles className="h-8 w-8 sm:h-7 sm:w-7" />
 						</motion.div>
@@ -136,10 +123,8 @@ export default function PromptBar() {
 					</div>
 				</CardHeader>
 				<div>
-					{/* Input Form */}
 					<div className="space-y-4">
 						<div className="flex flex-col sm:flex-row gap-4">
-							{/* Topic Input */}
 							<div className="flex-1 relative min-w-0">
 								<PenTool className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-violet-400/70 z-10" />
 								<Input
@@ -165,7 +150,6 @@ export default function PromptBar() {
 								/>
 							</div>
 
-							{/* Tone Select */}
 							<div className="w-full sm:w-38 flex-shrink-0">
 								<Select
 									value={tone}
@@ -224,7 +208,6 @@ export default function PromptBar() {
 								</Select>
 							</div>
 
-							{/* Length Select */}
 							<div className="w-full sm:w-42 flex-shrink-0">
 								<Select
 									value={length}
@@ -265,7 +248,6 @@ export default function PromptBar() {
 								</Select>
 							</div>
 
-							{/* Generate Button */}
 							<div className="w-full sm:w-40 flex-shrink-0">
 								<Button
 									onClick={onGenerate}
@@ -304,7 +286,6 @@ export default function PromptBar() {
 						</div>
 					</div>
 
-					{/* Help Text */}
 					<p
 						id="topic-help"
 						className="text-xs text-slate-500/70 mt-4 text-center"

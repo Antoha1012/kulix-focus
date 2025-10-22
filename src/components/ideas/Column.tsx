@@ -1,10 +1,5 @@
 "use client";
 
-/**
- * Purpose: Column component for drag&drop zones with idea cards.
- * Boundaries: Client-only; handles drag&drop events.
- * Owner: @anton (initial)
- */
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -107,7 +102,7 @@ export default function Column({ column }: ColumnProps) {
 			<CardHeader className="flex flex-row items-center justify-between">
 				<div className="flex items-center gap-3">
 					<div
-						className={`${colors.iconColor} ${colors.iconBg} w-8 h-8 rounded-lg flex items-center justify-center shadow-[inset_0_1px_0_rgba(255,255,255,.08),0_8px_18px_rgba(0,0,0,.35)] border ${colors.border.replace("/40", "/40")}`}
+						className={`${colors.iconColor} ${colors.iconBg} w-10 h-10 rounded-lg flex items-center justify-center p-2 shadow-[inset_0_1px_0_rgba(255,255,255,.08),0_8px_18px_rgba(0,0,0,.35)] border ${colors.border.replace("/40", "/40")}`}
 					>
 						{columnIcons[column.id]}
 					</div>
@@ -115,15 +110,17 @@ export default function Column({ column }: ColumnProps) {
 						{column.title}
 					</CardTitle>
 				</div>
-				<Button
-					variant="ghost"
-					size="sm"
-					onClick={handleClear}
-					disabled={column.items.length === 0}
-					className="text-slate-400 hover:text-slate-200 hover:bg-slate-700/50 transition-colors"
-				>
-					<Trash2 className="h-4 w-4" />
-				</Button>
+
+				{column.items.length > 0 && (
+					<Button
+						variant="ghost"
+						size="sm"
+						onClick={handleClear}
+						className="text-slate-400 hover:text-slate-200 hover:bg-slate-700/50 transition-colors"
+					>
+						<Trash2 className="h-4 w-4" />
+					</Button>
+				)}
 			</CardHeader>
 			<CardContent
 				className="space-y-3 min-h-[300px]"

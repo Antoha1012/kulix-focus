@@ -1,8 +1,3 @@
-/**
- * Purpose: Zod schema for Focus AI inputs.
- * Boundaries: Pure types/validation only.
- * Owner: @anton (initial)
- */
 import { z } from "zod";
 
 export const focusSchema = z.object({

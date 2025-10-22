@@ -4,15 +4,10 @@ import Link from "next/link";
 import { Github, Linkedin } from "lucide-react";
 import { motion } from "framer-motion";
 
-/**
- * Purpose: Global footer component displayed on all pages
- * Boundaries: Static content only; no dynamic data or state
- * Owner: @anton (initial)
- */
 export default function Footer() {
 	return (
 		<motion.footer
-			className="border-t border-white/10 pt-8 pb-8 mt-auto"
+			className="border-t border-white/10 pt-4 pb-4 mt-auto"
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			transition={{ duration: 0.8, delay: 0.2 }}
@@ -20,7 +15,8 @@ export default function Footer() {
 			<div className="container mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="flex flex-col md:flex-row justify-between items-center gap-4">
 					<div className="text-slate-400 text-sm">
-						© 2024 KuliX Focus. Open source productivity tool.
+						© {new Date().getFullYear()} KuliX Focus. Open source
+						productivity tool.
 					</div>
 					<div className="flex items-center gap-4">
 						<Link

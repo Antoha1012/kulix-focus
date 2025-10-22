@@ -8,7 +8,7 @@
 		background: linear-gradient(135deg, #1b0f3a 0%, #3b0f59 100%);
 		min-height: 100vh;
 	}
-	
+
 	body {
 		@apply bg-transparent text-foreground antialiased;
 		min-height: 100vh;

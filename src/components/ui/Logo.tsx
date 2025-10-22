@@ -2,13 +2,6 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import React, { useState } from "react";
-
-/**
- * Purpose: Header logo component with particle effects
- * Boundaries: UI component only; optimized for header use
- * Owner: @anton (initial)
- */
 
 interface LogoProps {
 	className?: string;
@@ -21,21 +14,6 @@ export default function Logo({
 	showText = true,
 	size = "md",
 }: LogoProps) {
-	const [isHovered, setIsHovered] = useState(false);
-	const [particleOffsets, setParticleOffsets] = useState<
-		Array<{ x: number; y: number }>
-	>([]);
-
-	// Generate random values once on mount to avoid calling Math.random during render
-	React.useEffect(() => {
-		setParticleOffsets(
-			[...Array(4)].map(() => ({
-				x: (Math.random() - 0.5) * 15,
-				y: (Math.random() - 0.5) * 15,
-			}))
-		);
-	}, []);
-
 	const sizeClasses = {
 		sm: "h-5 w-5",
 		md: "h-6 w-6",
@@ -57,20 +35,12 @@ export default function Logo({
 	return (
 		<Link
 			href="/"
-			className={`group flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#2e2054] to-[#3a2a66] shadow-[inset_0_1px_0_rgba(255,255,255,.08),0_8px_18px_rgba(0,0,0,.35)] hover:shadow-[0_12px_24px_rgba(0,0,0,.4)] transition-all duration-300 ${className}`}
-			onMouseEnter={() => setIsHovered(true)}
-			onMouseLeave={() => setIsHovered(false)}
+			className={`group flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#2e2054] to-[#3a2a66] shadow-[inset_0_1px_0_rgba(255,255,255,.08),0_8px_18px_rgba(0,0,0,.35)] transition-all duration-300 ${className}`}
 		>
-			{/* Icon Container */}
 			<motion.div
-				className={`${sizeClasses[size]} items-center justify-center rounded-lg bg-gradient-to-br from-blue-400 via-purple-400 to-indigo-400 shadow-lg group-hover:shadow-blue-400/50 transition-all duration-300 relative overflow-hidden`}
-				whileHover={{
-					scale: 1.1,
-					rotate: 5,
-				}}
+				className={`${sizeClasses[size]} items-center justify-center rounded-lg bg-gradient-to-br from-blue-400 via-purple-400 to-indigo-400 shadow-lg transition-all duration-300 relative overflow-hidden`}
 				whileTap={{ scale: 0.95 }}
 			>
-				{/* Animated background gradient */}
 				<motion.div
 					className="absolute inset-0 rounded-lg"
 					animate={{
@@ -87,37 +57,6 @@ export default function Logo({
 					}}
 				/>
 
-				{/* Particles */}
-				<div className="absolute inset-0">
-					{[...Array(4)].map((_, i) => (
-						<motion.div
-							key={i}
-							className="absolute w-1 h-1 bg-white rounded-full"
-							style={{
-								left: "50%",
-								top: "50%",
-							}}
-							animate={
-								isHovered && particleOffsets[i]
-									? {
-											opacity: [0, 1, 0],
-											scale: [0, 1, 0],
-											x: [0, particleOffsets[i].x],
-											y: [0, particleOffsets[i].y],
-										}
-									: {}
-							}
-							transition={{
-								duration: 1.5,
-								delay: i * 0.2,
-								repeat: Infinity,
-								repeatDelay: 2,
-							}}
-						/>
-					))}
-				</div>
-
-				{/* Main Icon */}
 				<motion.div
 					className={`flex ${iconSizeClasses[size]} items-center justify-center relative z-10`}
 				>
@@ -136,11 +75,9 @@ export default function Logo({
 				</motion.div>
 			</motion.div>
 
-			{/* Text */}
 			{showText && (
 				<motion.span
-					className={`${textSizeClasses[size]} font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent group-hover:from-blue-300 group-hover:via-purple-300 group-hover:to-indigo-300 transition-all duration-300`}
-					whileHover={{ scale: 1.02 }}
+					className={`${textSizeClasses[size]} font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent transition-all duration-300`}
 				>
 					KuliX Focus
 				</motion.span>

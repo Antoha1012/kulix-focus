@@ -1,8 +1,3 @@
-/**
- * Purpose: Ideas module store for idea items, columns, and generation.
- * Boundaries: UI state only; API interactions happen in components/actions.
- * Owner: @anton (initial)
- */
 import { create } from "zustand";
 
 export interface IdeaItem {

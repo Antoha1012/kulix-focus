@@ -1,10 +1,5 @@
 "use client";
 
-/**
- * Purpose: Ideas generation form and board with drag&drop columns.
- * Boundaries: Client-only; calls API and manages ideas state.
- * Owner: @anton (initial)
- */
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -51,7 +46,6 @@ export default function Board() {
 				throw new Error(msg);
 			}
 
-			// Add generated ideas to "To Explore" column
 			json.data.items.forEach(item => {
 				addIdea({
 					content: item.content,
@@ -72,7 +66,6 @@ export default function Board() {
 
 	return (
 		<div className="space-y-8">
-			{/* Ideas Generation Card */}
 			<motion.div
 				initial={{ opacity: 0, y: 20 }}
 				animate={{ opacity: 1, y: 0 }}
@@ -112,7 +105,6 @@ export default function Board() {
 				</Card>
 			</motion.div>
 
-			{/* Columns Grid */}
 			<motion.div
 				className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6"
 				initial={{ opacity: 0, y: 20 }}

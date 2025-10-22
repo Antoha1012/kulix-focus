@@ -1,10 +1,5 @@
 "use client";
 
-/**
- * Purpose: Shows generated draft with copy-to-clipboard action.
- * Boundaries: Client-only; pure UI actions.
- * Owner: @anton (initial)
- */
 import { Button } from "@/components/ui/button";
 import { CardHeader, CardTitle } from "@/components/ui/card";
 import { useWritingStore } from "@/lib/store/writing.store";

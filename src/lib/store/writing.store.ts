@@ -1,8 +1,3 @@
-/**
- * Purpose: Writing module store for prompt parameters and generated draft.
- * Boundaries: UI state only; API interactions happen in components/actions.
- * Owner: @anton (initial)
- */
 import { create } from "zustand";
 
 export type Tone =

@@ -1,8 +1,3 @@
-/**
- * Purpose: OpenRouter LLM provider for production use with real AI generation.
- * Boundaries: Interacts with OpenRouter API; uses OpenAI-compatible interface.
- * Owner: @anton (initial)
- */
 import type {
 	IdeasInput,
 	LLMProvider,
@@ -12,6 +7,8 @@ import type {
 } from "@/lib/llm";
 import OpenAI from "openai";
 
+// Configuration function for OpenRouter API
+// Reads environment variables and provides defaults for API settings
 function getOpenRouterConfig() {
 	const apiKey = process.env.OPENROUTER_API_KEY;
 	if (!apiKey) {
@@ -77,9 +74,11 @@ export const openrouterProvider: LLMProvider = {
 			// Build a comprehensive prompt based on user preferences
 			const toneInstructions = {
 				neutral: "Use a neutral, professional tone",
-				formal: "Use a formal, academic tone with proper structure",
-				casual: "Use a casual, conversational tone",
+				professional: "Use a professional, business-like tone",
 				friendly: "Use a warm, friendly tone that's approachable",
+				bold: "Use a bold, confident tone with strong statements",
+				playful: "Use a playful, creative tone with humor",
+				academic: "Use a formal, academic tone with proper structure",
 			};
 
 			const lengthInstructions = {
@@ -123,7 +122,6 @@ Make it engaging, well-structured, and informative.`;
 		}
 	},
 
-
 	async ideas(
 		input: IdeasInput
 	): Promise<{ items: { content: string; tags: string[] }[] }> {
@@ -136,6 +134,7 @@ Make it engaging, well-structured, and informative.`;
 		try {
 			const { topic, count = 5, tags = [] } = input;
 
+			// Build contextual prompt for idea generation
 			const tagsText =
 				tags.length > 0
 					? `Focus on these areas: ${tags.join(", ")}`
@@ -161,10 +160,12 @@ Return ONLY a JSON array in this format:
 
 			const content = response.choices[0]?.message?.content || "[]";
 
-			// Clean and parse the JSON response
+			// Clean and parse the JSON response from AI
+			// AI responses may contain markdown formatting or extra text
 			let cleanedContent = content.trim();
 
 			// Remove markdown code blocks if present
+			// AI sometimes wraps JSON in ```json or ``` blocks
 			if (cleanedContent.includes("```json")) {
 				cleanedContent = cleanedContent
 					.replace(/```json\s*/, "")
@@ -176,6 +177,7 @@ Return ONLY a JSON array in this format:
 			}
 
 			// Extract JSON array from the response
+			// Sometimes AI includes extra text before/after the JSON
 			const jsonMatch = cleanedContent.match(/\[[\s\S]*\]/);
 			if (jsonMatch) {
 				cleanedContent = jsonMatch[0];
@@ -220,9 +222,12 @@ Return ONLY a JSON array in this format:
 		try {
 			const { context, existingPriorities = [], count = 3 } = input;
 
-			const existingText = existingPriorities.length > 0 
-				? `\n\nCurrent priorities to avoid duplicating:\n${existingPriorities.map((p, i) => `${i + 1}. ${p}`).join("\n")}`
-				: "";
+			// Build context-aware prompt for focus suggestions
+			// Include existing priorities to avoid duplicates
+			const existingText =
+				existingPriorities.length > 0
+					? `\n\nCurrent priorities to avoid duplicating:\n${existingPriorities.map((p, i) => `${i + 1}. ${p}`).join("\n")}`
+					: "";
 
 			const prompt = `You are a productivity coach. Based on the user's context, suggest ${count} clear, actionable daily priorities.
 
@@ -246,10 +251,12 @@ Return ONLY a JSON array in this format:
 
 			const content = response.choices[0]?.message?.content || "[]";
 
-			// Clean and parse the JSON response
+			// Clean and parse the JSON response from AI
+			// AI responses may contain markdown formatting or extra text
 			let cleanedContent = content.trim();
 
 			// Remove markdown code blocks if present
+			// AI sometimes wraps JSON in ```json or ``` blocks
 			if (cleanedContent.includes("```json")) {
 				cleanedContent = cleanedContent
 					.replace(/```json\s*/, "")
@@ -261,6 +268,7 @@ Return ONLY a JSON array in this format:
 			}
 
 			// Extract JSON array from the response
+			// Sometimes AI includes extra text before/after the JSON
 			const jsonMatch = cleanedContent.match(/\[[\s\S]*\]/);
 			if (jsonMatch) {
 				cleanedContent = jsonMatch[0];

@@ -1,10 +1,5 @@
 "use client";
 
-/**
- * Purpose: Individual idea card component with drag&drop support.
- * Boundaries: Client-only; receives callbacks via props.
- * Owner: @anton (initial)
- */
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -27,7 +22,6 @@ export default function IdeaCard({ idea }: IdeaCardProps) {
 	}
 
 	function handleAddToFocus() {
-		// Check if we can add more focus items
 		if (focusItems.length >= 3) {
 			toast.error("Maximum 3 focus items allowed per day");
 			return;
@@ -54,7 +48,6 @@ export default function IdeaCard({ idea }: IdeaCardProps) {
 			onKeyDown={e => {
 				if (e.key === "Enter" || e.key === " ") {
 					e.preventDefault();
-					// Could add edit functionality here
 				}
 			}}
 		>
@@ -70,7 +63,7 @@ export default function IdeaCard({ idea }: IdeaCardProps) {
 								<Badge
 									key={index}
 									variant="secondary"
-									className="text-xs bg-slate-700/50 text-slate-300 border-slate-600/40 hover:bg-slate-600/50 transition-colors"
+									className="text-xs bg-slate-700/50 text-slate-300 border-slate-600/40"
 								>
 									{tag}
 								</Badge>

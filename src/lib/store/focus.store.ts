@@ -1,109 +1,111 @@
-/**
- * Purpose: Manage daily focus priorities with simple tracking
- * Boundaries: Only handles focus items, no complex scheduling
- * Owner: @anton (initial)
- */
-
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-export interface FocusItem {
-	id: string;
-	text: string;
-	completed: boolean;
-	createdAt: Date;
-	completedAt?: Date;
-}
-
-interface FocusState {
-	// Current day's focus items (max 3)
-	focusItems: FocusItem[];
-
-	// Actions
-	addFocusItem: (text: string) => void;
-	toggleFocusItem: (id: string) => void;
-	removeFocusItem: (id: string) => void;
-	clearCompleted: () => void;
-	resetDay: () => void;
-
-	// Computed values
-	getCompletedCount: () => number;
-	getTotalCount: () => number;
-	getProgressPercentage: () => number;
-}
+import type { FocusItem, FocusState } from "@/types/focus";
+import { FOCUS_CONSTANTS } from "@/types/focus";
 
 export const useFocusStore = create<FocusState>()(
 	persist(
 		(set, get) => ({
 			focusItems: [],
 
-			addFocusItem: (text: string) => {
+			addFocusItem: (text: string): void => {
 				const state = get();
 
-				// Limit to 3 focus items per day
-				if (state.focusItems.length >= 3) {
+				// Validate input text
+				// Ensure text is not empty and meets minimum length requirement
+				const trimmedText = text.trim();
+				if (
+					!trimmedText ||
+					trimmedText.length < FOCUS_CONSTANTS.MIN_TEXT_LENGTH
+				) {
 					return;
 				}
 
+				// Enforce daily limit to prevent overwhelming users
+				// Helps maintain focus on most important priorities
+				if (state.focusItems.length >= FOCUS_CONSTANTS.MAX_ITEMS) {
+					return;
+				}
+
+				// Create new focus item with validation
 				const newItem: FocusItem = {
 					id: crypto.randomUUID(),
-					text: text.trim(),
+					text: trimmedText.slice(0, FOCUS_CONSTANTS.MAX_TEXT_LENGTH),
 					completed: false,
 					createdAt: new Date(),
 				};
 
-				set(state => ({
-					focusItems: [...state.focusItems, newItem],
-				}));
+				// Add to store using immutable update pattern
+				set(
+					(state): Partial<FocusState> => ({
+						focusItems: [...state.focusItems, newItem],
+					})
+				);
 			},
 
-			toggleFocusItem: (id: string) => {
-				set(state => ({
-					focusItems: state.focusItems.map(item =>
-						item.id === id
-							? {
-									...item,
-									completed: !item.completed,
-									completedAt: !item.completed
-										? new Date()
-										: undefined,
-								}
-							: item
-					),
-				}));
+			toggleFocusItem: (id: string): void => {
+				// Toggle completion status and track completion time
+				// When marking as completed, record the timestamp
+				// When unmarking, clear the completion timestamp
+				set(
+					(state): Partial<FocusState> => ({
+						focusItems: state.focusItems.map(
+							(item): FocusItem =>
+								item.id === id
+									? {
+											...item,
+											completed: !item.completed,
+											completedAt: !item.completed
+												? new Date()
+												: undefined,
+										}
+									: item
+						),
+					})
+				);
 			},
 
-			removeFocusItem: (id: string) => {
-				set(state => ({
-					focusItems: state.focusItems.filter(item => item.id !== id),
-				}));
+			removeFocusItem: (id: string): void => {
+				set(
+					(state): Partial<FocusState> => ({
+						focusItems: state.focusItems.filter(
+							(item): boolean => item.id !== id
+						),
+					})
+				);
 			},
 
-			clearCompleted: () => {
-				set(state => ({
-					focusItems: state.focusItems.filter(
-						item => !item.completed
-					),
-				}));
+			clearCompleted: (): void => {
+				set(
+					(state): Partial<FocusState> => ({
+						focusItems: state.focusItems.filter(
+							(item): boolean => !item.completed
+						),
+					})
+				);
 			},
 
-			resetDay: () => {
+			resetDay: (): void => {
 				set({ focusItems: [] });
 			},
 
 			// Computed values
-			getCompletedCount: () => {
-				return get().focusItems.filter(item => item.completed).length;
+			getCompletedCount: (): number => {
+				return get().focusItems.filter(
+					(item): boolean => item.completed
+				).length;
 			},
 
-			getTotalCount: () => {
+			getTotalCount: (): number => {
 				return get().focusItems.length;
 			},
 
-			getProgressPercentage: () => {
+			getProgressPercentage: (): number => {
+				// Calculate completion percentage for progress tracking
+				// Returns 0 if no items exist to avoid division by zero
 				const focusItems = get().focusItems;
 				const completedCount = focusItems.filter(
-					item => item.completed
+					(item): boolean => item.completed
 				).length;
 				const totalCount = focusItems.length;
 				return totalCount > 0
@@ -114,17 +116,25 @@ export const useFocusStore = create<FocusState>()(
 		{
 			name: "focus-store",
 			// Only persist focus items, not computed values
+			// This prevents storing calculated values that should be recalculated
 			partialize: state => ({ focusItems: state.focusItems }),
-			// Handle date deserialization
+			// Skip persistence on server-side to avoid hydration issues
+			skipHydration: typeof window === "undefined",
+			// Handle date deserialization from localStorage
+			// JSON doesn't preserve Date objects, so we need to recreate them
 			onRehydrateStorage: () => state => {
 				if (state?.focusItems) {
-					state.focusItems = state.focusItems.map(item => ({
+					// Create new array to avoid readonly mutation
+					// Convert string dates back to Date objects
+					const hydratedItems = state.focusItems.map(item => ({
 						...item,
 						createdAt: new Date(item.createdAt),
 						completedAt: item.completedAt
 							? new Date(item.completedAt)
 							: undefined,
 					}));
+					// Return new state object instead of mutating existing state
+					return { focusItems: hydratedItems };
 				}
 			},
 		}

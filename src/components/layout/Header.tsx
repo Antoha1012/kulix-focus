@@ -1,10 +1,5 @@
 "use client";
 
-/**
- * Purpose: Modern responsive header with desktop navigation and mobile drawer menu.
- * Boundaries: UI only; includes mobile menu state and navigation.
- * Owner: @anton (initial)
- */
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -42,10 +37,8 @@ export default function Header() {
 		<header className="sticky top-0 z-40 backdrop-blur-sm bg-[#1b0f3a]/40 border-b border-white/10">
 			<div className="container mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="flex h-14 items-center justify-between">
-					{/* Logo */}
 					<Logo showText={true} size="md" />
 
-					{/* Desktop Navigation - Centered */}
 					<nav className="hidden md:flex items-center gap-2">
 						{navigationItems.map(item => (
 							<Link
@@ -58,7 +51,6 @@ export default function Header() {
 						))}
 					</nav>
 
-					{/* Mobile Menu */}
 					<div className="md:hidden">
 						<Sheet>
 							<SheetTrigger asChild>
@@ -82,7 +74,6 @@ export default function Header() {
 									application
 								</SheetDescription>
 
-								{/* Header - same as closed state but with X instead of burger */}
 								<motion.div
 									className="sticky top-0 z-40 backdrop-blur-sm bg-[#1b0f3a]/40 border-b border-white/10"
 									initial={{ opacity: 0, y: -20 }}
@@ -91,7 +82,6 @@ export default function Header() {
 								>
 									<div className="container mx-auto px-4 sm:px-6 lg:px-8">
 										<div className="flex h-14 items-center justify-between">
-											{/* Logo with glow effect */}
 											<div className="relative">
 												<Logo
 													showText={true}
@@ -100,7 +90,6 @@ export default function Header() {
 												/>
 											</div>
 
-											{/* Right side with X button */}
 											<div className="flex items-center space-x-4">
 												<SheetClose asChild>
 													<motion.button
@@ -122,7 +111,6 @@ export default function Header() {
 									</div>
 								</motion.div>
 
-								{/* Navigation Items */}
 								<nav className="flex-1 p-6 space-y-1">
 									{navigationItems.map((item, index) => {
 										const isActive = pathname === item.href;
@@ -193,7 +181,6 @@ export default function Header() {
 									})}
 								</nav>
 
-								{/* Brand Footer */}
 								<motion.div
 									className="p-6 border-t border-white/10"
 									initial={{ opacity: 0 }}

@@ -1,18 +1,17 @@
-/**
- * Purpose: LLM provider abstraction and selector.
- * Boundaries: Server-only usage; OpenRouter provider only.
- * Owner: @anton (initial)
- */
-
 export type Tool = "write" | "ideas" | "focus";
 
 export interface WriteInput {
 	topic: string;
-	tone?: "neutral" | "formal" | "casual" | "friendly";
+	tone?:
+		| "neutral"
+		| "professional"
+		| "friendly"
+		| "bold"
+		| "playful"
+		| "academic";
 	length?: "short" | "medium" | "long";
 	outline?: string[];
 }
-
 
 export interface IdeasInput {
 	topic: string;
@@ -26,15 +25,15 @@ export interface IdeasOutputItem {
 }
 
 export interface FocusInput {
-	context: string; // User's current situation/goals
-	existingPriorities?: string[]; // Current priorities to avoid duplicates
-	count?: number; // Number of suggestions (default 3)
+	context: string;
+	existingPriorities?: string[];
+	count?: number;
 }
 
 export interface FocusOutputItem {
 	priority: string;
-	reason: string; // Why this is important
-	category: string; // work, personal, health, etc.
+	reason: string;
+	category: string;
 }
 
 export interface LLMProvider {

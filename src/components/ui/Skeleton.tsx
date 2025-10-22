@@ -1,10 +1,5 @@
 "use client";
 
-/**
- * Purpose: Loading skeleton component for async operations.
- * Boundaries: Pure UI component; no business logic.
- * Owner: @anton (initial)
- */
 import { motion } from "framer-motion";
 
 interface SkeletonProps {

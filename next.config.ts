@@ -5,16 +5,16 @@ const nextConfig: NextConfig = {
 	experimental: {
 		optimizePackageImports: ["lucide-react", "@radix-ui/react-icons"],
 	},
-	
+
 	// Image optimization
 	images: {
 		formats: ["image/webp", "image/avif"],
 		minimumCacheTTL: 31536000, // 1 year
 	},
-	
+
 	// Compression
 	compress: true,
-	
+
 	// Bundle analyzer (uncomment to analyze bundle)
 	// webpack: (config, { isServer }) => {
 	// 	if (!isServer) {
@@ -25,7 +25,7 @@ const nextConfig: NextConfig = {
 	// 	}
 	// 	return config;
 	// },
-	
+
 	// Headers for better caching
 	async headers() {
 		return [
